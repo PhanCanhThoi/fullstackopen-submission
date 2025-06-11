@@ -1,164 +1,53 @@
-import { useInsertionEffect, useState } from "react";
-type ButtonProps = {
-  onClick: () => void;
-  text: string;
-};
+import { useState } from "react";
 
-const Button = (props: ButtonProps) => (
-  <button onClick={props.onClick}>{props.text}</button>
-);
-
-const Display = ({ counter }: { counter: number }) => <div>{counter}</div>;
-
-type HistoryProps = {
-  allClicks: String[];
-};
-
-//History
-const History = (props: HistoryProps) => {
-  if (props.allClicks.length === 0) {
-    return <div>The app is used by pressing the buttons</div>;
-  }
-  return <div>button press history : {props.allClicks.join("")}</div>;
-};
-
-const App = () => {
-  const [value, setValue] = useState(10);
-
-  const setToValue = (newValue: number) => () => {
-    console.log("valur now", newValue);
-    setValue(newValue);
-  };
-  const [counter, setCounter] = useState(0);
-  const [right, setRight] = useState(0);
-  const [left, setLeft] = useState(0);
-  const [clicks, setClicks] = useState({ left: 0, right: 0 });
-  const [allClicks, setAll] = useState<string[]>([]);
-  const [total, setTotal] = useState(0);
-
-  const handleLeftClick = () => {
-    const updateLeft = left + 1;
-    setLeft(updateLeft);
-    setAll(allClicks.concat("L"));
-    setTotal(updateLeft + right);
-  };
-  const handleRightClick = () => {
-    const updateRight = right + 1;
-    setRight(right + 1);
-    setAll(allClicks.concat("R"));
-    setTotal(left + updateRight);
-  };
-  const increaseByOne = () => setCounter(counter + 1);
-  const decreaseByOne = () => setCounter(counter - 1);
-  const zero = () => setCounter(0);
-  const course = {
-    name: "Half Stack application development",
-    parts: [
-      {
-        name: "Fundamentals of React",
-        exercises: 10,
-      },
-      {
-        name: "Using props to pass data",
-        exercises: 7,
-      },
-      {
-        name: "State of a conponent",
-        exercises: 14,
-      },
-    ],
-  };
-
-  return (
-    <div>
-      <div>
-        <Header course={course.name} />
-        <Content
-          part1={course.parts[0]}
-          part2={course.parts[1]}
-          part3={course.parts[2]}
-        />
-        <Total
-          part1={course.parts[0]}
-          part2={course.parts[1]}
-          part3={course.parts[2]}
-        />
-      </div>
-      <Display counter={counter} />
-      <Button onClick={increaseByOne} text="plus" />
-      <Button onClick={decreaseByOne} text="minus" />
-      <Button onClick={zero} text="zero" />
-      <div>
-        {left}
-        <button onClick={handleLeftClick}>Left</button>
-        <button onClick={handleRightClick}>Right</button>
-        {right}
-        <p>total {total}</p>
-        <History allClicks={allClicks} />
-      </div>
-      <div>
-        {value}
-        <Button onClick={setToValue(1000)} text="thousand" />
-        <Button onClick={setToValue(0)} text="reset" />
-        <Button onClick={setToValue(value + 1)} text="+1" />
-      </div>
-    </div>
-  );
-};
-
-//Header
-type HeaderProps = {
-  course: string;
-};
-
-function Header({ course }: HeaderProps) {
-  return <h1>{course}</h1>;
+function getRandomAnecdote(anecdotes: string[]): number {
+  return Math.floor(Math.random() * anecdotes.length);
 }
 
-//content
-type Part = {
-  name: string;
-  exercises: number;
+const handleVote = ({
+  selected,
+  votes,
+  setVotes,
+}: {
+  selected: number;
+  votes: number[];
+  setVotes: React.Dispatch<React.SetStateAction<number[]>>;
+}) => {
+  const newVotes = [...votes];
+  newVotes[selected] += 1;
+  setVotes(newVotes);
 };
 
-type ContentProps = {
-  part1: Part;
-  part2: Part;
-  part3: Part;
-};
-function Part({ name, exercises }: Part) {
-  return (
-    <p>
-      {name} {exercises}
-    </p>
-  );
-}
-function Content({ part1, part2, part3 }: ContentProps) {
+function App() {
+  const anecdotes = [
+    "If it hurts, do it more often",
+    "Adding manpower to a late software project makes it later!",
+    "The first 90 percent of the code accounts for the first 90 percent of the development time. The remaining ten percent accounts for the other 90 percent.",
+    "Any fool can write code that a computer can understand. Good programmers write code that humans can understand.",
+    "Premature optimization is the root of all evil.",
+    "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.",
+    "Programming without an overall architecture is like building a house on the sand.",
+    "Simplicity is the soul of efficiency.",
+  ];
+  const [votes, setVotes] = useState(Array(anecdotes.length).fill(0));
+  const [selected, setSelected] = useState(getRandomAnecdote(anecdotes));
+  const maxVotes = Math.max(...votes); // Find the maximum number of votes
+  const maxVotesIndex = votes.indexOf(maxVotes); // Find the index of the anecdote with the maximum votes
   return (
     <div>
+      <p>{anecdotes[selected]}</p>
+      <button onClick={() => handleVote({ selected, votes, setVotes })}>
+        vote
+      </button>
+      <button onClick={() => setSelected(getRandomAnecdote(anecdotes))}>
+        next anecdote
+      </button>
+
+      <h2>Anecdote with most votes</h2>
       <p>
-        {part1.name} {part1.exercises}
-      </p>
-      <p>
-        {part2.name} {part2.exercises}
-      </p>
-      <p>
-        {part3.name} {part3.exercises}
+        {anecdotes[maxVotesIndex]}. has {maxVotes} votes
       </p>
     </div>
   );
 }
-
-//Total
-type TotalProps = {
-  part1: Part;
-  part2: Part;
-  part3: Part;
-};
-
-function Total({ part1, part2, part3 }: TotalProps) {
-  const total = part1.exercises + part2.exercises + part3.exercises;
-  return <p>tổng số bài tập là {total}</p>;
-}
-
 export default App;
