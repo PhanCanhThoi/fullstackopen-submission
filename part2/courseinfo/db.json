@@ -1,0 +1,49 @@
+{
+  "notes": [
+    {
+      "id": "1",
+      "content": "HTML is easy",
+      "important": false
+    },
+    {
+      "id": "2",
+      "content": "Browser can execute only JavaScript",
+      "important": true
+    },
+    {
+      "id": "3",
+      "content": "GET and POST are the most important methods of HTTP protocol",
+      "important": false
+    },
+    {
+      "id": "2b23",
+      "content": "I am learning React.Js",
+      "important": true
+    },
+    {
+      "id": "5",
+      "content": "I am learning React.Js",
+      "important": false
+    },
+    {
+      "id": "6",
+      "content": "My name is Thoi",
+      "important": true
+    },
+    {
+      "id": "7",
+      "content": "Course HTML Of Thoi",
+      "important": false
+    },
+    {
+      "id": "8",
+      "content": "Hello World",
+      "important": false
+    },
+    {
+      "id": "9",
+      "content": "Course Java Spring Boot",
+      "important": false
+    }
+  ]
+}
