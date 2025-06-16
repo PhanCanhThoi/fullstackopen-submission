@@ -51,7 +51,7 @@ function App() {
       .then((returnedNote) => {
         setNotes(notes.map((n) => (n.id !== id ? n : returnedNote)));
       })
-      .catch((error) => {
+      .catch(() => {
         setError(`note '${note.content}' was already removed from server`);
         setTimeout(() => {
           setError(null);

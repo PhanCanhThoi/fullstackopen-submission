@@ -121,12 +121,13 @@ app.get('/info',(request,response)=>{
     )
 })
 
+
 //Select all person
 app.get('/api/persons',(request,response)=>{
     response.json(persons).end()
 })
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT,()=>{
     console.log(`server running on port ${PORT}`)
 })
