@@ -17,10 +17,10 @@ function App() {
     const [errorMessage, setErrorMessage] = useState(null)
     const [successMessage, setSuccessMessage] = useState(null)
     const hook = () => {
-      axios.get('http://localhost:3001/notes').then(response =>{
-        setNotes(response.data)
-      })
-      axios.get('http://localhost:3001/persons').then(response => {
+      // axios.get('http://localhost:3001/api/notes').then(response =>{
+      //   setNotes(response.data)
+      // })
+      axios.get('http://localhost:3001/api/persons').then(response => {
         console.log(response.data)
         setPersons(response.data)
       })

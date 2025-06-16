@@ -1,13 +1,12 @@
 const express = require('express')
+const path = require('path')
 const app = express()
 const cors = require('cors')
 app.use(cors())
 app.use(express.json())
-app.use(express.static('dist'))
+app.use(express.static(path.resolve(__dirname, 'dist')));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'))
-})
+
 let notes = [
   {
     id: "1",
@@ -27,11 +26,11 @@ let notes = [
 ]
 //Update important
 app.put('/api/notes/:id',(request,response)=>{
-    const id = Number(request.params.id)
+    const id = request.params.id
     const body = request.body
-    const noteIndex = notes.findIndex(note=>note.id=id)
+    const noteIndex = notes.findIndex(note=>note.id===id)
     if(noteIndex===-1){
-      return response.status(404)
+      return response.status(404).end()
     }
 
     const updateNote = {
@@ -64,7 +63,7 @@ app.get('/api/notes',(request,response)=>{
 app.delete('/api/notes/:id',(request,response)=>{
   const id = request.params.id
   notes = notes.filter(note => note.id !==id)
-  response.status(204).end
+  response.status(204).end()
 })
 
 //create note
@@ -91,6 +90,9 @@ app.post('/api/notes',(request,response)=>{
 })
 
  
+// app.get('/*', (req, res) => {
+//   res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
+// });
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT,()=>{
