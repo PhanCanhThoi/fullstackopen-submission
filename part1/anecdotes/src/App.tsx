@@ -3,7 +3,6 @@ import { useState } from "react";
 function getRandomAnecdote(anecdotes: string[]): number {
   return Math.floor(Math.random() * anecdotes.length);
 }
-
 const handleVote = ({
   selected,
   votes,
