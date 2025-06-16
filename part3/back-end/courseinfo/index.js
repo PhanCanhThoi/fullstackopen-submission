@@ -1,5 +1,7 @@
 const express = require('express')
 const app = express()
+const cors = require('cors')
+app.use(cors())
 app.use(express.json())
 let notes = [
   {
@@ -18,7 +20,24 @@ let notes = [
     important: true
   }
 ]
+//Update important
+app.put('/api/notes/:id',(request,response)=>{
+    const id = Number(request.params.id)
+    const body = request.body
+    const noteIndex = notes.findIndex(note=>note.id=id)
+    if(noteIndex===-1){
+      return response.status(404)
+    }
 
+    const updateNote = {
+      ...notes[noteIndex],
+      content: body.content,
+      important: body.important
+    }
+    notes[noteIndex] = updateNote
+    response.json(updateNote)
+    
+})
 //Get all note from database
 app.get('/api/notes/:id',(request,response)=>{
   const id = request.params.id
@@ -65,7 +84,10 @@ app.post('/api/notes',(request,response)=>{
   notes = notes.concat(note)
   response.json(note)
 })
-const PORT = 3001
+
+ 
+
+const PORT = process.env.PORT || 3001
 app.listen(PORT,()=>{
     console.log(`Server running on port ${PORT}`)
 })

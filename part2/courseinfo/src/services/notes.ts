@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseUrl = 'http://localhost:3001/notes'
+const baseUrl = 'http://localhost:3001/api/notes'
 
 export interface Note {
   id: number
@@ -10,12 +10,7 @@ export interface Note {
 
 const getAll = (): Promise<Note[]> => {
   const request = axios.get<Note[]>(baseUrl)
-  const nonExistingNote: Note = {
-    id: 10000,
-    content: 'This note is not saved to server',
-    important: true
-  }
-  return request.then(res => res.data.concat(nonExistingNote))
+  return request.then(res => res.data)
 }
 
 const create = (newNote: Omit<Note, 'id'>): Promise<Note> => {

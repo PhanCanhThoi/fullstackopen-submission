@@ -1,0 +1,17 @@
+body {
+  background-color: #f5f5f5;
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  margin-left: 0.5em;
+}
+
+.note {
+  color: grey;
+  padding-top: 3px;
+  font-size: 1.2em;
+}
+
