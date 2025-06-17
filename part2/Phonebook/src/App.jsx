@@ -20,12 +20,15 @@ function App() {
       // axios.get('http://localhost:3001/api/notes').then(response =>{
       //   setNotes(response.data)
       // })
-      axios.get('http://localhost:3001/api/persons').then(response => {
-        console.log(response.data)
-        setPersons(response.data)
+      personService.getAll().then(data => {
+        setPersons(data)
       })
     }
-    useEffect(hook, [])
+    useEffect(() => {
+      personService.getAll().then(data => {
+        setPersons(data)
+      })
+    }, [])
     const addName = (event) => {
     event.preventDefault()
     // Check if the new name already exists in the phonebook

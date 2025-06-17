@@ -1,12 +1,7 @@
 const express = require('express')
 const app = express()
 app.use(express.json())
-const path = require('path')
 app.use(express.static('dist'))
-
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'))
-})
 const morgan = require('morgan')
 // const cors = require('cors')
 // app.use(cors())
