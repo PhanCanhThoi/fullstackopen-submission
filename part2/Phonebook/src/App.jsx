@@ -4,7 +4,6 @@ import axios from 'axios'
 import personService from './services/persons.js'
 import Filter from './components/Filter.jsx'    
 import PersonForm from './components/PersonForm.jsx'  
-import ShowNotes from './components/ShowNotes.jsx'
 import ShowPersons from './components/ShowPersons.jsx'
 import PhoneError from './components/PhoneError.jsx'
 function App() {
@@ -35,10 +34,12 @@ function App() {
     if(persons.some(person => person.name === newName)) {
       if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
         const personToUpdate = persons.find(person => person.name === newName)
+        console.log(personToUpdate)
         const updatedPerson = {
           ...personToUpdate,
           number: newNumber
         }
+        console.log(updatedPerson)
         personService.update(personToUpdate.id, updatedPerson 
         )
         .then(response => {
@@ -74,6 +75,7 @@ function App() {
       number: newNumber,
       id : persons.length +1
     }
+
     personService.create(newPerson)
     .then(response =>{
       setPersons(persons.concat(response))
@@ -85,32 +87,34 @@ function App() {
       setNewName('')
       setNewNumber('')
     })
+    .catch(error=>{
+      console.log(error.response.data.error)
+    })
     alert(`${newName} has been added to phonebook`)
     setNewName('')
     setNewNumber('')
   }
-  const deletePerson = (id) =>{
-      personService.getById(id)
-      .then(response => {
-        if (window.confirm(`Delete ${response.name}?`)) {
-           personService.remove(id)
-          .then(()=>{
-          setPersons(persons.filter(person => person.id !== id))
-          alert('Person deleted successfully')
-        })
-        } else {
-          throw new Error('Deletion cancelled')
-        }
+  const deletePerson = (id) => {
+  const person = persons.find(p => p.id === id);
+
+  if (!person) {
+    alert('Person not found');
+    return;
+  }
+  if (window.confirm(`Delete ${person.name}?`)) {
+    personService.remove(id)
+      .then(() => {
+        setPersons(persons.filter(p => p.id !== id));
+        alert('Person deleted successfully');
       })
       .catch(error => {
-        console.error('Error deleting person:', error)
-      })
-
-       
-
-      
-  
+        console.error('Error deleting person:', error);
+        alert('Error deleting person');
+      });
   }
+};
+
+
   const handleChangeNumber = (event) => {
     setNewNumber(event.target.value)
   }
@@ -135,7 +139,7 @@ function App() {
       />
       <h2>Numbers</h2>
       <ShowPersons persons={personsToShow} deletePerson={deletePerson}/>
-      <ShowNotes notes={notes} />
+
     </div>
   )
 

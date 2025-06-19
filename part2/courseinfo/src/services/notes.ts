@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+//TODO: Đổi đường đãn thành /api/notes để deploy
 const baseUrl = '/api/notes'
 
 export interface Note {
