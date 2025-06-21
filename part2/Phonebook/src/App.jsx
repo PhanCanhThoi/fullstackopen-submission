@@ -80,6 +80,7 @@ function App() {
     .then(response =>{
       setPersons(persons.concat(response))
       setSuccessMessage(`Added ${newName} with number ${newNumber}`)
+      alert(`${newName} has been added to phonebook`)
       setTimeout(() => {
         setSuccessMessage(null)
       }, 5000)
@@ -88,9 +89,11 @@ function App() {
       setNewNumber('')
     })
     .catch(error=>{
-      console.log(error.response.data.error)
+      setErrorMessage(error.response.data.error)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
     })
-    alert(`${newName} has been added to phonebook`)
     setNewName('')
     setNewNumber('')
   }

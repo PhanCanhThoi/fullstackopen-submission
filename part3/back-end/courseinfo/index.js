@@ -75,7 +75,6 @@ app.delete('/api/notes/:id',(request,response)=>{
 
 app.post('/api/notes',(request,response,next)=>{
   const body = request.body
-  
   try{
     if(!body.content){
     return response.status(400).json({

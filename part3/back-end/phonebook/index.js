@@ -40,7 +40,11 @@ app.put('/api/persons/:id',async (request,response,next)=>{
     const id = request.params.id
     const personToUpdate = request.body
     try{
-      const updatedPerson =await Person.findByIdAndUpdate(id, personToUpdate, { new: true });
+      const updatedPerson = await Person.findByIdAndUpdate(id, personToUpdate, {
+        new: true,
+        runValidators: true,
+        context: 'query'
+      });
       if(!updatedPerson){
         return response.status(404).json({ error: 'Person not found' });
       }
@@ -54,7 +58,6 @@ app.put('/api/persons/:id',async (request,response,next)=>{
 //Create person 
 app.post('/api/persons', async (request, response, next) => {
   const { name, number } = request.body
-
   try {
     const existingPerson = await Person.findOne({ name })
     if (existingPerson) {
@@ -66,7 +69,6 @@ app.post('/api/persons', async (request, response, next) => {
     const person = new Person({ name, number })
     const savedPerson = await person.save()
     response.json(savedPerson)
-
   } catch (error) {
     next(error) // Gửi lỗi tới middleware xử lý lỗi
   }
